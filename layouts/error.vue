@@ -1,44 +1,58 @@
 <template>
   <v-app dark>
-    <h1 v-if="error.statusCode === 404">
-      {{ pageNotFound }}
+    <!-- Blabla error -->
+    <h1 class="text-center pa-4">
+      Sorry, an error occured...
     </h1>
-    <h1 v-else>
-      {{ otherError }}
-    </h1>
-    <NuxtLink to="/">
-      Home page
+
+    <!-- Blabla status code -->
+    <h2 class="text-center">
+      Status code : {{ error.statusCode }}
+    </h2>
+
+    <!-- Blabla content of the error -->
+    <h2 class="text-center font-italic">
+      - {{ getError.message }} -
+    </h2>
+
+    <!-- Link to the Homepage -->
+    <NuxtLink to="/" class="pa-8">
+      Return to Home page
     </NuxtLink>
   </v-app>
 </template>
 
 <script>
 export default {
-  layout: 'empty',
+  layout: 'LayoutError',
+
   props: {
     error: {
       type: Object,
       default: null
     }
   },
-  data () {
-    return {
-      pageNotFound: '404 Not Found',
-      otherError: 'An error occurred'
+
+  computed: {
+    /** Returns a complete answer depending on the error's status code */
+    getError () {
+      const errors = [
+        { statusCode: 401, message: 'Unauthorized access' },
+        { statusCode: 404, message: 'Page not found' },
+        { statusCode: 500, message: 'Internal Server Error' }
+      ]
+
+      return (
+        errors.find(e => e.statusCode === this.error.statusCode) || {
+          statusCode: this.error.statusCode,
+          message: 'Error'
+        }
+      )
     }
   },
+
   head () {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title
-    }
+    return { title: this.getError.message }
   }
 }
 </script>
-
-<style scoped>
-h1 {
-  font-size: 20px;
-}
-</style>

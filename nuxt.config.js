@@ -14,7 +14,7 @@ export default {
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/logo.ico' }
     ]
   },
 
@@ -35,7 +35,7 @@ export default {
     '@nuxtjs/eslint-module',
 
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify',
+    '@nuxtjs/vuetify'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -49,8 +49,8 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          primary: '#147FC6',
+          accent: '#BEA0C2',
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
