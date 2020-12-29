@@ -30,14 +30,14 @@
               <v-col cols="12" sm="4">
                 <v-select
                   v-model="userPlaceholder.civility"
-                  :items="['Mr.', 'Ms.', 'other']"
+                  :items="['Mr.', 'Ms.', 'Other']"
                   :disabled="!isModifying"
                   single-line
                   prepend-icon="mdi-gender-male-female"
                 />
               </v-col>
 
-              <!-- User's first Name -->
+              <!-- User's first name -->
               <v-col cols="12" sm="4">
                 <v-text-field
                   v-model="userPlaceholder.nameFirst"
@@ -51,7 +51,7 @@
                 />
               </v-col>
 
-              <!-- User's last Name -->
+              <!-- User's last name -->
               <v-col cols="12" sm="4">
                 <v-text-field
                   v-model="userPlaceholder.nameLast"
@@ -110,9 +110,8 @@
               <!-- User's date of admission -->
               <v-col cols="12" sm="4" align-self="center">
                 <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :disabled="!isModifying"
+                  ref="menuDate"
+                  v-model="menuDate"
                   :close-on-content-click="false"
                   transition="scale-transition"
                   offset-y
@@ -120,18 +119,19 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="date"
-                      :disabled="!isModifying"
-                      label="Date of admission"
+                      v-model="userPlaceholder.dateCreation"
+                      label="Date of creation"
                       prepend-icon="mdi-calendar"
+                      :disabled="!isModifying"
                       readonly
+                      :rules="[rules.required]"
                       v-bind="attrs"
                       v-on="on"
                     />
                   </template>
                   <v-date-picker
                     ref="picker"
-                    v-model="date"
+                    v-model="userPlaceholder.dateCreation"
                     :max="new Date().toISOString().substr(0, 10)"
                     min="1950-01-01"
                     @change="save"
@@ -154,7 +154,7 @@ import MixinRules from '@/mixins/mixin-rules'
 const lodash = require('lodash')
 
 export default {
-  name: 'PageTemplate',
+  name: 'PageUserEdit',
 
   components: {
     ButtonsChanges,
@@ -172,8 +172,7 @@ export default {
 
     // Whether the form is valid or not
     form: false,
-    date: null,
-    menu: false,
+    menuDate: false,
 
     // The user's data and the placeholder
     user: {
@@ -211,21 +210,21 @@ export default {
   },
 
   watch: {
-    menu (val) {
+    menuDate (val) {
       val && setTimeout(() => (this.$refs.picker.activePicker = 'YEAR'))
     }
   },
 
   mounted () {
-    // Blablabla, we get the user
+    // Blablabla, we set the user with HARD CODED VALUES
     this.user = {
       idUser: this.idUser,
       civility: 'Mr.',
       nameFirst: 'John',
       nameLast: 'DOE',
       address: '30-32, Avenue de la République',
-      zipCode: 0,
-      city: '94800',
+      zipCode: 94800,
+      city: 'Villejuif',
       dateCreation: null
     }
 
@@ -237,6 +236,10 @@ export default {
   },
 
   methods: {
+    /** Required method to save the date */
+    save (date) {
+      this.$refs.menuDate.save(date)
+    },
     /** Opens all changes brought to the user */
     openChanges () {
       // We open the modifications
@@ -254,13 +257,11 @@ export default {
 
     /** Saves all changes brought to the user */
     saveChanges () {
-      // We close the modifications
-      this.isModifying = false
-    },
-
-    save (date) {
-      this.$refs.menu.save(date)
-      this.userPlaceholder.date = date
+      // If the form is valid
+      if (this.$refs.form.validate()) {
+        // We close the modifications
+        this.isModifying = false
+      }
     }
   },
 
