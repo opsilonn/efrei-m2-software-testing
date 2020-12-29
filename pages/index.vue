@@ -23,10 +23,11 @@
                 return-object
                 single-line
                 prepend-icon="mdi-account-box"
+                @input="changing"
               />
             </v-col>
             <v-col cols="6" class="text-center">
-              <NuxtLink :to="selectedUser.idUser === -1 ? '/user' : `/user/${selectedUser.idUser}`">
+              <NuxtLink :to="selectedUser.idUser === -1 ? '/user/0' : `/user/${selectedUser.idUser}`">
                 <v-btn
                   x-large
                   color="primary"
@@ -64,7 +65,7 @@
               />
             </v-col>
             <v-col cols="6" class="text-center">
-              <NuxtLink :to="selectedContract.idContract === -1 ? '/contract' : `/contract/${selectedContract.idContract}`">
+              <NuxtLink :to="selectedContract.idContract === -1 ? `/user/${selectedUser.idUser}/contract/0` : `/user/${selectedUser.idUser}/contract/${selectedContract.idContract}`">
                 <v-btn
                   x-large
                   color="primary"
@@ -84,7 +85,7 @@
 
 <script>
 // Imports
-
+import axios from 'axios'
 export default {
   name: 'PageIndex',
 
@@ -100,15 +101,18 @@ export default {
   data () {
     return {
       selectedUser: { idUser: -1, name: 'New user' },
-      selectedContract: { idContract: -1, name: 'New contract' }
+      selectedContract: { idContract: -1, name: 'New contract' },
+      contractCurrent: undefined,
+      users: [],
+      contracts: []
     }
   },
 
   computed: {
     /** List of all the users */
-    users () {
+    /* users () {
       return [{ idUser: 12345678, civility: 'M.', nameFirst: 'John', nameLast: 'DOE' }]
-    },
+    }, */
 
     /** List of all the user items for the select widget */
     userItems () {
@@ -126,9 +130,10 @@ export default {
     },
 
     /** The current contract, if any */
-    contractCurrent () {
-      return { idContract: 12345678 } || undefined
+    /* contractCurrent () {
+      return this.contracts.find((element) => { return element.user_idUser.idUser === this.selectedUser }) || undefined
     },
+    */
 
     /** List of all the user items for the select widget */
     contractItems () {
@@ -148,10 +153,25 @@ export default {
   watch: {
   },
 
-  mounted () {
+  async mounted () {
+    const userstmp = await axios.get('/api/users')
+    console.log(userstmp)
+    this.users = userstmp.data
+    const contractTmp = await axios.get('/api/contracts')
+    console.log(contractTmp)
+    this.contracts = contractTmp.data
   },
 
   methods: {
+    changing () {
+      console.log(this.selectedUser)
+      console.log(this.contracts)
+      console.log(this.selectedUser)
+      this.contractCurrent = this.contracts.find((element) => {
+        console.log(element)
+        return element.user_idUser.idUser === this.selectedUser.idUser
+      }) || undefined
+    }
   },
 
   head () {
