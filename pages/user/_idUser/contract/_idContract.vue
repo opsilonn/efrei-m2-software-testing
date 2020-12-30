@@ -160,13 +160,23 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     // Blablabla, we set the contract with HARD CODED VALUES
     this.contract = {
       idContract: this.idContract,
       price: 10,
       electricalConsumption: 10,
       date: null
+    }
+
+    if (!this.isNewContract) {
+      const tmpContract = await axios.get('/api/contracts/' + this.idContract)
+      console.log(tmpContract)
+      if (tmpContract !== undefined) {
+        this.contract.price = tmpContract.data.price
+        this.contract.electricalConsumption = tmpContract.data.electricalConsumption
+        this.contract.date = tmpContract.data.date
+      }
     }
 
     // We set the placeholder
