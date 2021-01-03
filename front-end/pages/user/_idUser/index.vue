@@ -31,6 +31,7 @@
                 <v-select
                   v-model="userPlaceholder.civility"
                   :items="['Mr.', 'Ms.', 'Other']"
+                  :rules="[rules.required]"
                   :disabled="!isModifying"
                   single-line
                   prepend-icon="mdi-gender-male-female"
@@ -89,7 +90,7 @@
                   clearable
                   class="ma-4"
                   prepend-icon="mdi-numeric"
-                  type="number"
+                  type="text"
                 />
               </v-col>
 
@@ -182,7 +183,7 @@ export default {
       nameFirst: '',
       nameLast: '',
       address: '',
-      zipCode: 0,
+      zipCode: '',
       city: '',
       dateCreation: null
     },
@@ -192,7 +193,7 @@ export default {
       nameFirst: '',
       nameLast: '',
       address: '',
-      zipCode: 0,
+      zipCode: '',
       city: '',
       dateCreation: null
     }
@@ -217,31 +218,28 @@ export default {
   },
 
   async mounted () {
-    // Blablabla, we set the user with HARD CODED VALUES
-    this.user = {
-      idUser: this.idUser,
-      civility: 'Mr.',
-      nameFirst: 'John',
-      nameLast: 'DOE',
-      address: '30-32, Avenue de la République',
-      zipCode: 94800,
-      city: 'Villejuif',
-      dateCreation: null
-    }
-
-    if (!this.isNewUser) {
+    // If the user is new : allow to modify immediately
+    // Othserwise : get his data
+    if (this.isNewUser) {
+      this.isModifying = true
+    } else {
+      // We get his values
       const tmpUser = await axios.get('/api/users/' + this.idUser)
-      console.log(tmpUser)
 
+      // If a user was found
       if (tmpUser !== undefined) {
-        this.user.idUser = tmpUser.data.idUser
-        this.user.civility = tmpUser.data.civility
-        this.user.nameFirst = tmpUser.data.nameFirst
-        this.user.nameLast = tmpUser.data.nameLast
-        this.user.address = tmpUser.data.address
-        this.user.zipCode = tmpUser.data.zipCode
-        this.user.city = tmpUser.data.city
-        this.user.dateCreation = tmpUser.data.date_creation
+        // We get its data
+        this.user = {
+          idUser: tmpUser.data.idUser,
+          civility: tmpUser.data.civility,
+          nameFirst: tmpUser.data.nameFirst,
+          nameLast: tmpUser.data.nameLast,
+          address: tmpUser.data.address,
+          zipCode: tmpUser.data.zipCode,
+          city: tmpUser.data.city,
+          dateCreation: tmpUser.data.date_creation
+        }
+        console.log('date received ', this.user.dateCreation)
       }
     }
 
@@ -257,6 +255,7 @@ export default {
     save (date) {
       this.$refs.menuDate.save(date)
     },
+
     /** Opens all changes brought to the user */
     openChanges () {
       // We open the modifications
@@ -276,34 +275,34 @@ export default {
     saveChanges () {
       // If the form is valid
       if (this.$refs.form.validate()) {
-        // We close the modifications
-        const useToSend = {
-          civility: this.userPlaceholder.civility,
-          nameFirst: this.userPlaceholder.nameFirst,
-          nameLast: this.userPlaceholder.nameLast,
-          address: this.userPlaceholder.address,
-          zipCode: String(this.userPlaceholder.zipCode),
-          city: this.userPlaceholder.city,
-          date_creation: this.userPlaceholder.dateCreation
-        }
+        console.log('date sent ', this.userPlaceholder.dateCreation)
+        // If this is a new User : we add him to the database
+        // Otherwise : we update his row in the database
         if (this.isNewUser) {
-          console.log(useToSend)
-          axios.post('/api/users/', useToSend)
+          axios.post('/api/users/', this.userPlaceholder)
             .then((result) => {
-              console.log(result)
-            }).catch((err) => {
-              console.log(err)
+              // We close the modifications
+              this.isModifying = false
+
+              // To ensure that the user does not touch anything, we consider that we are loading
+              this.isLoading = true
+
+              // We redirect toward the home page
+              document.location.href = `/user/${result.data.idUser}`
+            }).catch(() => {
             })
         } else {
-          axios.put('/api/users/' + this.idUser, useToSend)
+          axios.put('/api/users/' + this.idUser, this.userPlaceholder)
             .then((response) => {
-              console.log(response)
+              // We close the modifications
+              this.isModifying = false
+
+              // We copy the placeholder into the "actual" values
+              this.user = lodash.cloneDeep(this.userPlaceholder)
             })
-            .catch((err) => {
-              console.log(err)
+            .catch(() => {
             })
         }
-        this.isModifying = false
       }
     }
   },
