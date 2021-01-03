@@ -91,3 +91,6 @@ sw.*
 
 # config file
 server/local.server.config.js
+*.class
+*.iml
+back/prototype/HELP.md
