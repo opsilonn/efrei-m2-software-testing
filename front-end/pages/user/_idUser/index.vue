@@ -219,14 +219,15 @@ export default {
 
   async mounted () {
     // If the user is new : allow to modify immediately
-    // Othserwise : get his data
+    // Otherwise : get his data
     if (this.isNewUser) {
+      // We activate the modification
       this.isModifying = true
     } else {
-      // We get his values
+      // We get the contract's values
       const tmpUser = await axios.get('/api/users/' + this.idUser)
 
-      // If a user was found
+      // If a user is found
       if (tmpUser !== undefined) {
         // We get its data
         this.user = {
@@ -239,7 +240,6 @@ export default {
           city: tmpUser.data.city,
           dateCreation: tmpUser.data.date_creation
         }
-        console.log('date received ', this.user.dateCreation)
       }
     }
 
@@ -275,7 +275,6 @@ export default {
     saveChanges () {
       // If the form is valid
       if (this.$refs.form.validate()) {
-        console.log('date sent ', this.userPlaceholder.dateCreation)
         // If this is a new User : we add him to the database
         // Otherwise : we update his row in the database
         if (this.isNewUser) {

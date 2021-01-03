@@ -30,8 +30,8 @@
               <v-col cols="12" sm="4">
                 <v-text-field
                   v-model="contractPlaceholder.price"
-                  label="First name"
-                  :rules="[rules.required]"
+                  label="Price"
+                  :rules="[rules.required, rules.notNegative]"
                   :disabled="!isModifying"
                   clearable
                   class="ma-4"
@@ -44,8 +44,8 @@
               <v-col cols="12" sm="4">
                 <v-text-field
                   v-model="contractPlaceholder.electricalConsumption"
-                  label="Last name"
-                  :rules="[rules.required]"
+                  label="Electrical consumption"
+                  :rules="[rules.required, rules.notNegative]"
                   :disabled="!isModifying"
                   clearable
                   class="ma-4"
@@ -127,13 +127,19 @@ export default {
       idContract: -1,
       price: 0,
       electricalConsumption: 0,
-      date: null
+      date: null,
+      user_idUser: {
+        idUser: -1
+      }
     },
     contractPlaceholder: {
       idContract: -1,
       price: 0,
       electricalConsumption: 0,
-      date: null
+      date: null,
+      user_idUser: {
+        idUser: -1
+      }
     }
   }),
 
@@ -143,14 +149,14 @@ export default {
       return parseInt(this.$route.params.idContract) === 0
     },
 
-    /** Return the id of the contract, if he has one */
-    idContract () {
-      return (this.iscontract) ? undefined : parseInt(this.$route.params.idContract)
-    },
-
     /** return the id of the user */
     idUser () {
-      return (this.isUser) ? undefined : parseInt(this.$route.params.idUser)
+      return parseInt(this.$route.params.idUser) || undefined
+    },
+
+    /** Return the id of the contract, if he has one */
+    idContract () {
+      return parseInt(this.$route.params.idContract) || undefined
     }
   },
 
@@ -161,21 +167,30 @@ export default {
   },
 
   async mounted () {
-    // Blablabla, we set the contract with HARD CODED VALUES
-    this.contract = {
-      idContract: this.idContract,
-      price: 10,
-      electricalConsumption: 10,
-      date: null
-    }
+    // If the contract is new : allow to modify immediately
+    // Otherwise : get his data
+    if (this.isNewContract) {
+      // We activate the modification
+      this.isModifying = true
 
-    if (!this.isNewContract) {
+      // We set the id of the user
+      this.contract.user_idUser.idUser = this.idUser
+    } else {
+      // We get the contract's values
       const tmpContract = await axios.get('/api/contracts/' + this.idContract)
-      console.log(tmpContract)
+
+      // If a contract is found
       if (tmpContract !== undefined) {
-        this.contract.price = tmpContract.data.price
-        this.contract.electricalConsumption = tmpContract.data.electricalConsumption
-        this.contract.date = tmpContract.data.date
+        // We get its data
+        this.contract = {
+          idContract: tmpContract.data.idContract,
+          price: tmpContract.data.price,
+          electricalConsumption: tmpContract.data.electricalConsumption,
+          date: tmpContract.data.date,
+          user_idUser: {
+            idUser: this.idUser
+          }
+        }
       }
     }
 
@@ -211,33 +226,34 @@ export default {
     saveChanges () {
       // If the form is valid
       if (this.$refs.form.validate()) {
-        const contractToSend = {
-          price: this.contractPlaceholder.price,
-          date: this.contractPlaceholder.date,
-          electricalConsumption: this.contractPlaceholder.electricalConsumption,
-          user_idUser: {
-            idUser: this.idUser
-          }
-        }
-        // We close the modifications
+        // If this is a new contract : we add him to the database
+        // Otherwise : we update his row in the database
         if (this.isNewContract) {
-          axios.post('/api/contracts/', contractToSend)
+          axios.post('/api/contracts/', this.contractPlaceholder)
             .then((result) => {
-              console.log(result)
-            }).catch((err) => {
-              console.log(err)
+              // We close the modifications
+              this.isModifying = false
+
+              // To ensure that the user does not touch anything, we consider that we are loading
+              this.isLoading = true
+
+              // We redirect toward the home page
+              document.location.href = `/user/${result.data.user_idUser.idUser}/contract/${result.data.idContract}`
+            }).catch(() => {
             })
         } else {
-          axios.put('/api/contracts/' + this.idContract, contractToSend)
+          axios.put('/api/contracts/' + this.idContract, this.contractPlaceholder)
             .then((response) => {
-              console.log(response)
+              // We close the modifications
+              this.isModifying = false
+
+              // We copy the placeholder into the "actual" values
+              this.contract = lodash.cloneDeep(this.contractPlaceholder)
             })
-            .catch((err) => {
-              console.log(err)
+            .catch(() => {
             })
         }
       }
-      this.isModifying = false
     }
   },
 
