@@ -18,9 +18,11 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Base de données :  `edg`
---
+-- -----------------------------------------------------
+-- Schema edg
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `edg` DEFAULT CHARACTER SET utf8 ;
+USE `edg` ;
 
 -- --------------------------------------------------------
 
@@ -28,8 +30,8 @@ SET time_zone = "+00:00";
 -- Structure de la table `contract`
 --
 
-DROP TABLE IF EXISTS `contract`;
-CREATE TABLE IF NOT EXISTS `contract` (
+DROP TABLE IF EXISTS `edg`.`contract`;
+CREATE TABLE IF NOT EXISTS `edg`.`contract` (
   `idContract` int(11) NOT NULL AUTO_INCREMENT,
   `price` float DEFAULT NULL,
   `date` date DEFAULT NULL,
@@ -43,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `contract` (
 -- Déchargement des données de la table `contract`
 --
 
-INSERT INTO `contract` (`idContract`, `price`, `date`, `electricalConsumption`, `user_idUser`) VALUES
+INSERT INTO `edg`.`contract` (`idContract`, `price`, `date`, `electricalConsumption`, `user_idUser`) VALUES
 (1, 120, '2020-12-24', 125, 1),
 (2, 120, '2020-12-27', 125, 1),
 (6, 120, '2017-05-10', 1400, 4),
@@ -55,8 +57,8 @@ INSERT INTO `contract` (`idContract`, `price`, `date`, `electricalConsumption`, 
 -- Structure de la table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
+DROP TABLE IF EXISTS `edg`.`user`;
+CREATE TABLE IF NOT EXISTS `edg`.`user` (
   `idUser` int(11) NOT NULL AUTO_INCREMENT,
   `civility` varchar(45) DEFAULT NULL,
   `nameFirst` varchar(35) DEFAULT NULL,
@@ -72,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`idUser`, `civility`, `nameFirst`, `nameLast`, `address`, `zipCode`, `city`, `date_creation`) VALUES
+INSERT INTO `edg`.`user` (`idUser`, `civility`, `nameFirst`, `nameLast`, `address`, `zipCode`, `city`, `date_creation`) VALUES
 (1, 'Mr.', 'francois', 'Boni', '31 route de la borde', '75024', 'Paris', '2020-11-24'),
 (3, 'Mr.', 'Alexandre ', 'Codarin', '26 Boulevard La Chapelle', '75019', 'Paris', '2020-11-24'),
 (4, 'Mr.', 'Mariano', 'Boni', '31 boulebard carnot', '78400', 'chatou', '1997-03-10'),
