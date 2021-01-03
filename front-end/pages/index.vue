@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card>
+    <v-card shaped>
       <!-- Title -->
       <h1 class="text-center">
         Software Testing
@@ -14,6 +14,7 @@
 
         <!-- User's form -->
         <v-container fluid>
+          <!-- User's select -->
           <v-row align="center">
             <v-col cols="6">
               <v-select
@@ -26,6 +27,8 @@
                 @input="changing"
               />
             </v-col>
+
+            <!-- User's button -->
             <v-col cols="6" class="text-center">
               <NuxtLink :to="selectedUser.idUser === -1 ? '/user/0' : `/user/${selectedUser.idUser}`">
                 <v-btn
@@ -54,6 +57,7 @@
         <!-- Contract's form -->
         <v-container fluid>
           <v-row align="center">
+            <!-- Contract's select -->
             <v-col cols="6">
               <v-select
                 v-model="selectedContract"
@@ -64,6 +68,8 @@
                 prepend-icon="mdi-file-document-edit-outline"
               />
             </v-col>
+
+            <!-- Contract's button -->
             <v-col cols="6" class="text-center">
               <NuxtLink :to="selectedContract.idContract === -1 ? `/user/${selectedUser.idUser}/contract/0` : `/user/${selectedUser.idUser}/contract/${selectedContract.idContract}`">
                 <v-btn
@@ -155,20 +161,14 @@ export default {
 
   async mounted () {
     const userstmp = await axios.get('/api/users')
-    console.log(userstmp)
     this.users = userstmp.data
     const contractTmp = await axios.get('/api/contracts')
-    console.log(contractTmp)
     this.contracts = contractTmp.data
   },
 
   methods: {
     changing () {
-      console.log(this.selectedUser)
-      console.log(this.contracts)
-      console.log(this.selectedUser)
       this.contractCurrent = this.contracts.find((element) => {
-        console.log(element)
         return element.user_idUser.idUser === this.selectedUser.idUser
       }) || undefined
     }
