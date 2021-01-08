@@ -77,10 +77,15 @@ This project of Software Testing aims to simulate the many activites the company
 Here, we'll focus on a simple POC of a web portal that is able to create and modify data, whether a user or a contract.
 
 ### Requirements
-We want to create or modify a user.
-A contract cannot be created if no user is selected.
-All inputs for both users and contracts must be valid (ex : no empty value, no negative number, all dates must be valid and existing...)
-The interface must be responsive as well as intuitive.
+* We want to create or modify a user or a contract.
+* A contract cannot be created if no user is selected.
+* All inputs for both users and contracts must be valid (ex : no empty value, no negative number, all dates must be valid and existing...).
+* The interface must be responsive as well as intuitive.
+* When arriving on the creation of a user / contract, we want to be able to modify immediately.
+* When arriving on the modification of a user / contract, we want that all inputs to be readonly as long as the user does not click on a "modification" button.
+* When modifiying of a user / contract, the user can both save or discard his changes.
+* When wanting to modify of a user / contract, if the ids given in the URL are not matched in the database, it should throw an error or a redirection.
+
 
 
 
