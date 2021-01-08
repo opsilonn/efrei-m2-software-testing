@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TestEndpointContract {
 
     private RestTemplate restTemplate = new RestTemplate();
+    private int idtmp;
 
 
     @Test
@@ -70,6 +71,7 @@ public class TestEndpointContract {
         newUser.setIdUser(1);
         Contract contract = new Contract(10, Date.valueOf("1998-08-12"), 25,newUser);
         Contract ResultContract = restTemplate.postForObject("http://localhost:8080/api/contracts/",contract,Contract.class);
+        this.idtmp = ResultContract.getIdContract();
         contract.setIdContract(ResultContract.getIdContract());
 
         assertThat(ResultContract).isEqualTo(contract);
@@ -78,12 +80,12 @@ public class TestEndpointContract {
     @Test
     void assertPut() throws  Exception {
         User newUser = new User();
-        newUser.setIdUser(3);
+        newUser.setIdUser(1);
 
         Contract contract = new Contract(10, Date.valueOf("1998-08-12"), 30,newUser);
 
         org.springframework.http.HttpEntity<Contract> contractHttpEntity = new HttpEntity<>(contract);
-        ResponseEntity<Contract> result = restTemplate.exchange("http://localhost:8080/api/contracts/5", HttpMethod.PUT, contractHttpEntity, Contract.class);
+        ResponseEntity<Contract> result = restTemplate.exchange("http://localhost:8080/api/contracts/1", HttpMethod.PUT, contractHttpEntity, Contract.class);
 
         contract.setIdContract(result.getBody().getIdContract());
         assertThat(result.getBody()).isEqualTo(contract);

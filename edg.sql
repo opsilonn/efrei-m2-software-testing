@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS `edg`.`contract` (
 
 INSERT INTO `edg`.`contract` (`idContract`, `price`, `date`, `electricalConsumption`, `user_idUser`) VALUES
 (1, 120, '2020-12-24', 125, 1),
-(2, 120, '2020-12-27', 125, 1),
-(6, 120, '2017-05-10', 1400, 4),
-(7, 120, '2016-05-11', 100, 5);
+(2, 120, '2020-12-27', 125, 2),
+(3, 120, '2017-05-10', 1400, 3),
+(4, 120, '2016-05-11', 100, 4);
 
 -- --------------------------------------------------------
 
@@ -76,11 +76,11 @@ CREATE TABLE IF NOT EXISTS `edg`.`user` (
 
 INSERT INTO `edg`.`user` (`idUser`, `civility`, `nameFirst`, `nameLast`, `address`, `zipCode`, `city`, `date_creation`) VALUES
 (1, 'Mr.', 'francois', 'Boni', '31 route de la borde', '75024', 'Paris', '2020-11-24'),
-(3, 'Mr.', 'Alexandre ', 'Codarin', '26 Boulevard La Chapelle', '75019', 'Paris', '2020-11-24'),
-(4, 'Mr.', 'Mariano', 'Boni', '31 boulebard carnot', '78400', 'chatou', '1997-03-10'),
-(5, 'Mme', 'pinpin', 'le lutin', '189 route de la republique', '94800', 'villejuif', '2020-03-10'),
-(8, 'Mme', 'Isabel', 'Le goff', '40 rue jacq ophenbach', '75016', 'Paris', '2020-11-28'),
-(9, 'Mr.', 'John', 'DOE', '30-32, Avenue de la République', '94800', 'Villejuif', '2016-08-24');
+(2, 'Mr.', 'Alexandre ', 'Codarin', '26 Boulevard La Chapelle', '75019', 'Paris', '2020-11-24'),
+(3, 'Mr.', 'Mariano', 'Boni', '31 boulebard carnot', '78400', 'chatou', '1997-03-10'),
+(4, 'Mme', 'pinpin', 'le lutin', '189 route de la republique', '94800', 'villejuif', '2020-03-10'),
+(5, 'Mme', 'Isabel', 'Le goff', '40 rue jacq ophenbach', '75016', 'Paris', '2020-11-28'),
+(6, 'Mr.', 'John', 'DOE', '30-32, Avenue de la République', '94800', 'Villejuif', '2016-08-24');
 
 --
 -- Contraintes pour les tables déchargées

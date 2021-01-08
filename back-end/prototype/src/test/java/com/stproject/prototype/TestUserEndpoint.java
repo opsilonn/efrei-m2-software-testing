@@ -30,7 +30,7 @@ public class TestUserEndpoint {
 
 
     private RestTemplate restTemplate = new RestTemplate();
-
+    public static Integer idtmp = new Integer(0);
 
 
     @Test
@@ -59,7 +59,7 @@ public class TestUserEndpoint {
     void assertGetResponse () throws Exception {
 
         User user = restTemplate.getForObject("http://localhost:8080/api/users/1",User.class);
-        User resultExpected = new User("M","francois","Boni","31 route de la borde", "78110","le vesinet", Date.valueOf("2020-11-24"));
+        User resultExpected = new User("Mr.","francois","Boni","31 route de la borde", "75024","Paris", Date.valueOf("2020-11-24"));
         resultExpected.setIdUser(1);
 
         assertThat(user).isEqualTo(resultExpected);
@@ -87,8 +87,9 @@ public class TestUserEndpoint {
         User newUser = new User("Mme","Isabel","Le goff","40 rue jacq ophenbach", "75016","Paris", Date.valueOf("2020-11-28"));
 
         org.springframework.http.HttpEntity<User> userHttpEntity = new HttpEntity<>(newUser);
-        ResponseEntity<User> result = restTemplate.exchange("http://localhost:8080/api/users/8", HttpMethod.PUT, userHttpEntity, User.class);
+        ResponseEntity<User> result = restTemplate.exchange("http://localhost:8080/api/users/2", HttpMethod.PUT, userHttpEntity, User.class);
         newUser.setIdUser(result.getBody().getIdUser());
+
         assertThat(result.getBody()).isEqualTo(newUser);
     }
 
@@ -105,7 +106,7 @@ public class TestUserEndpoint {
     void assertDelete() {
         Boolean result = true;
         try{
-            HttpEntity<Boolean> newResult= restTemplate.exchange("http://localhost:8080/api/users/8", HttpMethod.DELETE, null,Boolean.class);
+            HttpEntity<Boolean> newResult= restTemplate.exchange("http://localhost:8080/api/users/7", HttpMethod.DELETE, null,Boolean.class);
             result = newResult.getBody();
         } catch (Exception e) {
             e.printStackTrace();
