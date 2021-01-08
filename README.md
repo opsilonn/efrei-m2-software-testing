@@ -36,11 +36,7 @@
 ### Where to find the project
 Here is the Github repository :
  ```
-https://github.com/opsilonn/m2-software-testing
- ```
-Supposing we deploy the website - And here is the Heroku link where the website is deployed :
- ```
-https://github.com/opsilonn/m2-software-testing
+https://github.com/opsilonn/efrei-m2-software-testing
  ```
 
 
@@ -49,13 +45,27 @@ The goal of this project is to make a Proof Of Concept of a migration from a Jav
 
 
 ### Getting Started
-The programmation is fully completed, but we have a small requirement : downloading the dependencies.
+The programmation is fully completed, but you still have to both configure 3 parts of the project.
 Don't worry ! We've got you covered.
 
 ```
-Download the project.
-To fully end the set-up :
-  create a ccopy of the file 'server/local.server.config.example.js'
+ DATABASE :
+   Using XAMP ou WAMP, import the script 'edg.sql' that can be found at the root of the project.
+   
+ 
+ BACK-END :
+  Create a copy of the file 'hibernate-template.cfg.xml' that can be found here : '/back-end\prototype\src\main\resources'.
+  Rename it 'hibernate.cfg.xml', and rename the following parameters according to your configuration :
+    - connection.username
+    - connection.password, if you have any
+    - connection.url, if you use a port different to 3306
+   
+   Then go to the folder back-end and open the windows powershell or windows command line, and run the following command:
+   $mvn spring-boot:run
+
+ 
+ FRONT-END :
+  Create a copy of the file 'server/local.server.config.example.js'
   rename it 'server/local.server.config.js'
 
   To download the dependencies, open a console tab and enter :
@@ -96,21 +106,22 @@ blabla
 
 
 ### Prototype
-blabla
+The prototype is a Proof-Of-Concept to show that we are able to develop a website linked to a backend server that is able to create and modify a user or a contract.
 
 
 
 
 ## Technical round-up
 The whole project was made using :
+* **[XAMP](https://mariadb.org)** - MySQL server for Linux and Mac's users
+* **[WAMP](https://mariadb.org)** - MySQL server for Window's users
+* **[Spring.io](https://spring.io)** - Java toolbox to deploy performant and efficient Back-end servers
 * **[Node.js](https://nodejs.org)** - An asynchronous event-driven JavaScript runtime designed to build scalable network applications
 * **[Vue.js](https://fr.vuejs.org)** - Javascript's framework
 * **[Vuetify](https://vuetifyjs.com)** - a **[Vue.js](https://fr.vuejs.org)**'s UI library
 * **[Nuxt](https://nuxtjs.org)** - a **[Vue.js](https://fr.vuejs.org)**'s framework that enables to make singlepage websites (back and front on the same project)
 * **[Axios](https://github.com/axios)** - Promise based HTTP client for the browser and **[Node.js](https://nodejs.org)**
 * **[Vuex](https://vuex.vuejs.org)** -  State management pattern + library for **[Vue.js](https://fr.vuejs.org)** applications
-* **[Maria DB](https://mariadb.org)** - the database, chosen for its PL/SQL triggers and programs
-
 
 
 ## Authors
