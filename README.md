@@ -14,10 +14,6 @@
 
 [Requirements](https://github.com/opsilonn/m2-software-testing#requirements)
 
-[Data Migration](https://github.com/opsilonn/m2-software-testing#data-migration)
-
-[Test Plan](https://github.com/opsilonn/m2-software-testing#test-plan)
-
 [RoadMap](https://github.com/opsilonn/m2-software-testing#roadMap)
 
 [Prototype](https://github.com/opsilonn/m2-software-testing#prototype)
@@ -77,20 +73,14 @@ Don't worry ! We've got you covered.
 
 
 ## Advanced presentation
-blabla
+This project of Software Testing aims to simulate the many activites the company EDG wants to launch to reach more clients. Among them are a chat-box, a mobile application on both IOS and Android, a web portal... 
+Here, we'll focus on a simple POC of a web portal that is able to create and modify data, whether a user or a contract.
 
 ### Requirements
-blabla
-
-### Data migration
-blabla
-
-### Test Plan
-blabla
-
-
-### Conception
-blabla
+We want to create or modify a user.
+A contract cannot be created if no user is selected.
+All inputs for both users and contracts must be valid (ex : no empty value, no negative number, all dates must be valid and existing...)
+The interface must be responsive as well as intuitive.
 
 
 
