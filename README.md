@@ -50,7 +50,7 @@ Don't worry ! We've got you covered.
    
  
  BACK-END :
-  Create a copy of the file 'hibernate-template.cfg.xml' that can be found here : '/back-end\prototype\src\main\resources'.
+  Create a copy of the file 'hibernate-template.cfg.xml' that can be found here : '\back-end\prototype\src\main\resources'.
   Rename it 'hibernate.cfg.xml', and rename the following parameters according to your configuration :
     - connection.username
     - connection.password, if you have any
@@ -61,8 +61,8 @@ Don't worry ! We've got you covered.
 
  
  FRONT-END :
-  Create a copy of the file 'server/local.server.config.example.js'
-  rename it 'server/local.server.config.js'
+  Create a copy of the file 'local.server.config.example.js' that can be found here : '\front-end\server'.
+  rename it 'local.server.config.js'
 
   To download the dependencies, open a console tab and enter :
   $npm install
