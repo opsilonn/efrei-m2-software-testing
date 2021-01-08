@@ -94,3 +94,5 @@ server/local.server.config.js
 *.class
 *.iml
 back/prototype/HELP.md
+
+back-end/prototype/src/main/resources/hibernate.cfg.xml
